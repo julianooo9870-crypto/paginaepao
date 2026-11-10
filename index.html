@@ -1,0 +1,586 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Página &amp; Pão · café, comida e livros</title>
+<meta name="description" content="Um café-livraria no Centro de Manaus. Veja o cardápio, os livros e monte a sua comanda.">
+<meta name="theme-color" content="#F6F0E6">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Página &amp; Pão">
+<meta property="og:title" content="Página &amp; Pão · café, comida e livros">
+<meta property="og:description" content="Um café-livraria no Centro de Manaus. Veja o cardápio, os livros e monte a sua comanda.">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-title" content="Página &amp; Pão">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Nunito+Sans:wght@400;600;700;800&display=swap">
+<style>
+:root{
+  box-sizing:border-box;
+  --bg:#F6F0E6; --surface:#FBF7EF; --sand:#EDE3D2; --ink:#2A1C14; --muted:#6F5C4D; --line:#D9CBB8;
+  --cafe:#2A1C14; --papel:#F6F0E6; --tucuma:#A9481F; --cupu:#E0A458; --mata:#2E5E4E;
+  --accent:#A9481F; --on-accent:#F6F0E6; --neg:#A3322B;
+  --fh:'Cormorant Garamond',Georgia,'Times New Roman',serif;
+  --fu:'Nunito Sans','Trebuchet MS',Arial,sans-serif;
+  --cup:#2A1C14; --rim:#4A3326; --cof:#8A5A3C; --stm:#8A7664; --pg:#E4D7C3; --sau:#D9CBB8;
+  --shadow:0 18px 40px -22px rgba(42,28,20,.55);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#1B120D; --surface:#2A1C14; --sand:#33231A; --ink:#F6F0E6; --muted:#BFAE9C; --line:#4A382B;
+    --accent:#E8957A; --on-accent:#2A1C14; --neg:#F1948D;
+    --cup:#F6F0E6; --rim:#EDE3D2; --cof:#6B3E26; --stm:#D9CBB8; --pg:#F6F0E6; --sau:#EDE3D2;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1B120D; --surface:#2A1C14; --sand:#33231A; --ink:#F6F0E6; --muted:#BFAE9C; --line:#4A382B;
+  --accent:#E8957A; --on-accent:#2A1C14; --neg:#F1948D;
+  --cup:#F6F0E6; --rim:#EDE3D2; --cof:#6B3E26; --stm:#D9CBB8; --pg:#F6F0E6; --sau:#EDE3D2;
+}
+*,*::before,*::after{box-sizing:inherit;-webkit-tap-highlight-color:transparent}
+html{background:var(--bg);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--fu);font-size:1.0625rem;line-height:1.55;padding-top:env(safe-area-inset-top,0px)}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:100;opacity:.07;mix-blend-mode:multiply;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.9'/%3E%3C/svg%3E")}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body::before{mix-blend-mode:screen;opacity:.05}}
+h1,h2,h3{font-family:var(--fh);font-weight:700;margin:0;line-height:1.02}
+h2{font-size:2.6rem}
+p{margin:0}
+button{font-family:inherit}
+:focus-visible{outline:3px solid var(--cupu);outline-offset:2px;border-radius:8px}
+a{color:inherit}
+.mark{display:block}
+
+/* estrutura: celular em uma coluna; no computador, painel ao lado */
+.shell{display:block}
+.aside{display:none}
+.app{position:relative;max-width:520px;margin:0 auto;min-height:100vh;background:var(--bg)}
+@media(min-width:960px){
+  .shell{display:grid;grid-template-columns:minmax(320px,1fr) 480px;gap:72px;max-width:1080px;margin:0 auto;padding:0 32px}
+  .aside{display:flex;position:sticky;top:0;height:100vh;flex-direction:column;justify-content:center;gap:22px;padding-right:12px}
+  .aside .mark{width:150px;--cup:#2A1C14;--rim:#4A3326;--cof:#8A5A3C;--stm:#8A7664;--pg:#E4D7C3;--sau:#D9CBB8}
+  .aside h2{font-size:4.2rem;max-width:9ch}
+  .aside p{color:var(--muted);max-width:34ch}
+  .aside .hint{display:inline-flex;align-items:center;gap:10px;font-weight:700;color:var(--ink);padding:10px 16px;border:2px solid var(--ink);border-radius:999px;width:fit-content}
+  .app{margin:0;max-width:none;border-left:1px solid var(--line);border-right:1px solid var(--line)}
+}
+
+/* topo */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;display:flex;align-items:center;justify-content:space-between;height:58px;padding:0 20px;background:var(--bg);border-bottom:1px solid var(--line)}
+.brand span{white-space:nowrap}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--fh);font-weight:700;font-size:1.5rem;text-decoration:none}
+.brand .mark{width:30px;height:auto}
+.brand i{font-style:italic;font-weight:600;color:var(--accent)}
+.status{display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:.82rem;padding:7px 12px;border-radius:999px;background:var(--sand)}
+.status::before{content:"";width:9px;height:9px;border-radius:50%;background:#6B7B72}
+.status.on::before{background:#3F9B6B;box-shadow:0 0 0 0 rgba(63,155,107,.6);animation:pulse 2s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 8px rgba(63,155,107,0)}100%{box-shadow:0 0 0 0 rgba(63,155,107,0)}}
+
+/* telas */
+.view{padding:0 0 210px}
+.view[hidden]{display:none}
+.view:not([hidden]){animation:enter .4s cubic-bezier(.2,.7,.2,1)}
+@keyframes enter{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.pad{padding:0 20px}
+.sub{color:var(--muted);margin-top:10px}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:54px;padding:0 22px;border-radius:16px;font-weight:800;font-size:1.02rem;text-decoration:none;border:2px solid var(--accent);background:var(--accent);color:var(--on-accent);cursor:pointer;width:100%}
+.btn.alt{background:transparent;color:var(--ink);border-color:var(--ink)}
+.btn.amber{background:var(--cupu);border-color:var(--cupu);color:#2A1C14}
+.btn.ghost{background:transparent;color:var(--papel);border-color:rgba(246,240,230,.6)}
+.btn:active{transform:scale(.98)}
+
+/* início */
+.hero{position:relative;margin:12px;border-radius:30px;background:var(--cafe);color:var(--papel);padding:26px 22px 24px;overflow:hidden}
+.hero::before{content:"";position:absolute;right:-70px;top:-70px;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(224,164,88,.35),rgba(224,164,88,0) 68%)}
+.hero svg.art{display:block;width:190px;height:auto;margin:0 auto 6px;position:relative}
+.hero h1{font-size:clamp(2.9rem,13vw,3.7rem);position:relative;margin-top:6px}
+.hero h1 em{font-style:italic;font-weight:600;color:var(--cupu)}
+.hero p{color:#D9CBB8;margin:14px 0 22px;position:relative}
+.hero .btns{display:grid;gap:12px;position:relative}
+.steam{animation:steam 3.4s ease-in-out infinite;transform-box:fill-box;transform-origin:center bottom;opacity:0}
+.steam.s2{animation-delay:1.1s}.steam.s3{animation-delay:2.2s}
+@keyframes steam{0%{opacity:0;transform:translateY(10px) scaleY(.9)}30%{opacity:.85}100%{opacity:0;transform:translateY(-16px) scaleY(1.1)}}
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;padding:34px 20px 14px}
+.sec-h h2{font-size:2.2rem}
+.sec-h a{font-weight:800;font-size:.92rem;color:var(--accent);text-decoration:none}
+.rail{display:flex;gap:14px;overflow-x:auto;padding:4px 20px 14px;scroll-snap-type:x mandatory;scrollbar-width:none}
+.rail::-webkit-scrollbar{display:none}
+.card{flex:none;width:164px;scroll-snap-align:start;border-radius:24px;overflow:hidden;background:var(--surface);box-shadow:var(--shadow);border:1px solid var(--line)}
+.card .tile{position:relative;height:128px;display:grid;place-items:center}
+.card .tile::before{content:"";position:absolute;width:110px;height:110px;border-radius:50%;background:rgba(246,240,230,.14)}
+.card .tile svg{position:relative;width:84px;height:84px}
+.card .in{padding:12px 14px 14px;display:grid;gap:4px}
+.card b{font-size:.98rem;line-height:1.2}
+.card .row{display:flex;align-items:center;justify-content:space-between;margin-top:4px}
+.card .pr{font-weight:800}
+.mini{width:38px;height:38px;border-radius:50%;border:2px solid var(--ink);background:transparent;color:var(--ink);font-weight:800;font-size:1.3rem;line-height:1;cursor:pointer}
+.mini:active{background:var(--cupu);border-color:var(--cupu);color:#2A1C14}
+.t-caf{background:var(--cafe)}.t-ter{background:var(--tucuma)}.t-mat{background:var(--mata)}
+.banner{margin:10px 20px 0;border-radius:24px;padding:22px;background:var(--sand);display:grid;gap:10px;position:relative;overflow:hidden}
+.banner h3{font-size:1.9rem}
+.banner p{color:var(--muted)}
+.banner .btn{width:fit-content;min-height:48px;margin-top:6px}
+.fine{padding:30px 20px 0;font-size:.88rem;color:var(--muted)}
+
+/* cardápio */
+.menu-head{padding:26px 20px 6px}
+.sw{display:flex;align-items:center;gap:12px;margin-top:16px;font-weight:700;cursor:pointer;user-select:none}
+.sw input{position:absolute;opacity:0;width:1px;height:1px}
+.sw .tr{width:50px;height:30px;border-radius:999px;background:var(--line);position:relative;transition:background .2s}
+.sw .tr::after{content:"";position:absolute;left:3px;top:3px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:transform .2s}
+.sw input:checked+.tr{background:var(--accent)}
+.sw input:checked+.tr::after{transform:translateX(20px)}
+.sw input:focus-visible+.tr{outline:3px solid var(--cupu);outline-offset:2px}
+.cats{position:sticky;top:calc(58px + env(safe-area-inset-top,0px));z-index:20;display:flex;gap:8px;overflow-x:auto;padding:12px 20px;background:var(--bg);scrollbar-width:none;border-bottom:1px solid var(--line)}
+.cats::-webkit-scrollbar{display:none}
+.cat{flex:none;min-height:42px;padding:0 17px;border-radius:999px;border:2px solid var(--line);background:transparent;color:var(--ink);font-weight:800;font-size:.95rem;cursor:pointer;transition:background .2s,color .2s,border-color .2s}
+.cat[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.grp{padding:30px 20px 0;scroll-margin-top:130px}
+.grp-h{display:flex;align-items:center;gap:14px;padding-bottom:12px;border-bottom:2px solid var(--ink)}
+.ico{flex:none;width:56px;height:56px;border-radius:18px;display:grid;place-items:center}
+.ico svg{width:40px;height:40px}
+.grp-h h3{font-size:1.9rem}
+.grp-h small{display:block;color:var(--muted);font-family:var(--fu);font-weight:600;font-size:.85rem;margin-top:2px}
+.list{list-style:none;margin:0;padding:0}
+.list li{display:flex;align-items:center;gap:10px;min-height:68px;padding:2px 0;border-bottom:1px solid var(--line)}
+.nm{flex:1;min-width:0;line-height:1.2;display:flex;flex-direction:column;gap:3px;padding:8px 0}
+.nm .t{display:flex;align-items:center;gap:8px;font-weight:700}
+.nm small{color:var(--muted);font-size:.84rem;line-height:1.3;font-weight:400}
+.dot{flex:none;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.pr{font-weight:800;font-variant-numeric:tabular-nums}
+.ctl{flex:none;width:108px;display:flex;justify-content:flex-end}
+.add{width:44px;height:44px;border-radius:50%;border:2px solid var(--ink);background:transparent;color:var(--ink);font-weight:800;font-size:1.5rem;line-height:1;cursor:pointer;transition:transform .15s,background .15s}
+.add:active{transform:scale(.9);background:var(--cupu);border-color:var(--cupu);color:#2A1C14}
+.step{display:flex;align-items:center;background:var(--ink);color:var(--bg);border-radius:999px;height:44px;animation:pop .25s}
+.step button{width:40px;height:44px;border:0;background:none;color:inherit;font-weight:800;font-size:1.3rem;cursor:pointer;line-height:1}
+.step b{min-width:22px;text-align:center;font-variant-numeric:tabular-nums}
+@keyframes pop{from{transform:scale(.8)}to{transform:scale(1)}}
+.legend{padding:22px 20px 0;color:var(--muted);font-size:.92rem;display:flex;align-items:center;gap:8px}
+.none{padding:40px 20px;color:var(--muted);text-align:center}
+
+/* barra e folha da comanda */
+.cbar{position:sticky;bottom:calc(66px + env(safe-area-inset-bottom,0px) + 10px);z-index:35;display:flex;align-items:center;justify-content:space-between;width:calc(100% - 28px);margin:0 14px;min-height:58px;padding:0 20px;border:0;border-radius:18px;background:var(--ink);color:var(--bg);font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 14px 30px -12px rgba(0,0,0,.6);animation:rise .35s cubic-bezier(.2,.8,.2,1)}
+.cbar[hidden]{display:none}
+.cbar .n{display:inline-grid;place-items:center;min-width:28px;height:28px;border-radius:14px;background:var(--cupu);color:#2A1C14;font-size:.9rem;margin-right:10px}
+@keyframes rise{from{transform:translateY(30px);opacity:0}to{transform:none;opacity:1}}
+.scrim{position:fixed;inset:0;z-index:110;background:rgba(20,12,8,.55);animation:fade .2s}
+.scrim[hidden]{display:none}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.sheet{position:fixed;z-index:120;left:0;right:0;bottom:0;max-height:86vh;overflow:auto;background:var(--surface);border-radius:26px 26px 0 0;padding:20px 22px calc(26px + env(safe-area-inset-bottom,0px));animation:up .3s cubic-bezier(.2,.8,.2,1)}
+.sheet[hidden]{display:none}
+@keyframes up{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+.sheet header{display:flex;align-items:center;justify-content:space-between;padding-bottom:12px;border-bottom:2px solid var(--ink)}
+.sheet h3{font-size:1.9rem}
+.x{min-height:44px;padding:0 6px;border:0;background:none;color:var(--accent);font-weight:800;cursor:pointer}
+.sheet ul{list-style:none;margin:0;padding:0}
+.sheet li{display:flex;align-items:baseline;gap:8px;padding:11px 0}
+.sheet li .q{font-weight:800;min-width:26px;color:var(--accent)}
+.sheet li .d{flex:1;border-bottom:2px dotted var(--line);transform:translateY(-4px);min-width:10px}
+.sheet .tot{display:flex;justify-content:space-between;border-top:2px solid var(--ink);margin-top:6px;padding-top:12px;font-weight:800;font-size:1.4rem;font-variant-numeric:tabular-nums}
+.sheet .acts{display:grid;gap:10px;margin-top:18px}
+.ticket{text-align:center;padding:10px 0 4px}
+.ticket .stamp{display:inline-block;transform:rotate(-6deg);border:3px solid var(--accent);color:var(--accent);border-radius:10px;padding:8px 16px;font-weight:800;font-size:1.05rem;animation:stampin .45s cubic-bezier(.2,.9,.3,1.4)}
+@keyframes stampin{from{transform:rotate(-6deg) scale(2.2);opacity:0}to{transform:rotate(-6deg) scale(1);opacity:1}}
+.ticket .senha{font-family:var(--fh);font-weight:700;font-size:4.4rem;line-height:1;margin:18px 0 4px}
+.ticket p{color:var(--muted)}
+
+/* livros */
+.shelf{margin:22px 20px 0;border-radius:24px;background:var(--sand);padding:22px 18px 0;position:relative;overflow:hidden}
+.shelf svg{display:block;width:100%;height:auto}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:18px 20px 0}
+.three div{border:2px solid var(--line);border-radius:18px;padding:14px 10px;text-align:center}
+.three b{display:block;font-family:var(--fh);font-size:1.9rem;line-height:1;color:var(--accent)}
+.three span{display:block;font-weight:800;font-size:.86rem;margin-top:6px}
+.three small{color:var(--muted);font-size:.78rem}
+.books{list-style:none;margin:0;padding:0 20px}
+.bk{display:flex;gap:14px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
+.spine{flex:none;width:46px;height:70px;border-radius:5px 8px 8px 5px;position:relative;box-shadow:inset 6px 0 0 rgba(0,0,0,.18)}
+.spine::after{content:"";position:absolute;left:12px;right:8px;top:14px;height:3px;background:rgba(246,240,230,.6);box-shadow:0 8px 0 rgba(246,240,230,.4)}
+.bk b{display:block;font-family:var(--fh);font-size:1.3rem;line-height:1.1}
+.bk span{color:var(--muted);font-size:.92rem}
+.bk .res{margin-left:auto;flex:none;min-height:40px;padding:0 14px;border-radius:999px;border:2px solid var(--ink);background:transparent;color:var(--ink);font-weight:800;font-size:.85rem;cursor:pointer}
+.bk .res.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.card-leitor{margin:28px 20px 0;border-radius:24px;background:var(--cafe);color:var(--papel);padding:22px;position:relative;overflow:hidden;box-shadow:var(--shadow)}
+.card-leitor::after{content:"";position:absolute;right:-30px;bottom:-30px;width:150px;height:150px;border-radius:50%;background:rgba(224,164,88,.16)}
+.card-leitor .t{font-weight:800;font-size:.8rem;color:var(--cupu)}
+.card-leitor .nome{font-family:var(--fh);font-weight:700;font-size:2.3rem;line-height:1.05;margin:16px 0 4px;min-height:2.4rem;word-break:break-word}
+.card-leitor .meta{display:flex;justify-content:space-between;font-size:.88rem;color:#D9CBB8;position:relative;z-index:1;margin-top:18px}
+.card-leitor .stamp{position:absolute;right:16px;top:16px;transform:rotate(8deg);border:2px solid var(--cupu);color:var(--cupu);border-radius:8px;padding:4px 10px;font-weight:800;font-size:.72rem;z-index:1}
+.field{display:flex;flex-direction:column;gap:6px;margin:18px 20px 0;font-weight:800;font-size:.92rem}
+.field input{font:400 1.05rem var(--fu);min-height:54px;padding:0 16px;border-radius:14px;border:2px solid var(--line);background:var(--surface);color:var(--ink)}
+.field input:focus{border-color:var(--ink);outline:none}
+.pad .btn{margin-top:14px}
+
+/* visite */
+.open-card{margin:22px 20px 0;border-radius:26px;background:var(--mata);color:var(--papel);padding:24px;position:relative;overflow:hidden}
+.open-card.closed{background:var(--cafe)}
+.open-card small{font-weight:800;color:#C9DDD2}
+.open-card.closed small{color:var(--cupu)}
+.open-card h3{font-size:2.5rem;margin:6px 0 4px}
+.open-card p{color:#D9E6DE}
+.week{list-style:none;margin:0;padding:0 20px}
+.week li{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--line)}
+.week li.today{font-weight:800;color:var(--accent)}
+.info{padding:0 20px}
+.info>div{padding:18px 0;border-bottom:1px solid var(--line)}
+.info h3{font-size:1.6rem;margin-bottom:4px}
+.info p{color:var(--muted)}
+.cb{margin:22px 20px 0;border-radius:24px;border:2px solid var(--ink);padding:22px}
+.cb h3{font-size:1.9rem}
+.cb p{color:var(--muted);margin-top:4px}
+.cb label{display:flex;justify-content:space-between;font-weight:800;margin-top:18px}
+.cb output{color:var(--accent)}
+input[type=range]{width:100%;height:44px;accent-color:var(--accent);margin:2px 0 0}
+.cb .total{display:flex;justify-content:space-between;align-items:baseline;font-weight:800}
+.cb .total b{font-family:var(--fh);font-size:2.6rem;line-height:1}
+.msg{min-height:1.5em;margin-top:12px;font-weight:700;color:var(--accent)}
+
+/* menu de baixo */
+.tabs{position:sticky;bottom:0;z-index:40;display:grid;grid-template-columns:repeat(4,1fr);background:var(--bg);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+.tabs a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:66px;text-decoration:none;color:var(--muted);font-weight:800;font-size:.82rem;position:relative}
+.tabs a::before{content:"";position:absolute;top:-1px;left:22%;right:22%;height:3px;border-radius:0 0 3px 3px;background:var(--accent);transform:scaleX(0);transition:transform .25s}
+.tabs a[aria-current="page"]{color:var(--accent)}
+.tabs a[aria-current="page"]::before{transform:scaleX(1)}
+.tabs svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+.toast{position:fixed;left:50%;bottom:calc(150px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:130;background:var(--ink);color:var(--bg);font-weight:800;padding:12px 18px;border-radius:999px;box-shadow:0 14px 30px -12px rgba(0,0,0,.6);animation:rise .3s}
+.toast[hidden]{display:none}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.steam{opacity:.6}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<symbol id="mark" viewBox="100 136 380 410">
+<rect x="110" y="470" width="360" height="64" rx="8" fill="#A9481F"/><rect x="126" y="480" width="330" height="44" rx="4" fill="var(--pg)"/><rect x="110" y="470" width="22" height="64" rx="8" fill="#8F3A15"/>
+<rect x="140" y="410" width="320" height="60" rx="8" fill="#2E5E4E"/><rect x="156" y="419" width="292" height="42" rx="4" fill="var(--pg)"/><rect x="140" y="410" width="20" height="60" rx="8" fill="#244B3E"/>
+<rect x="125" y="354" width="330" height="56" rx="8" fill="#E0A458"/><rect x="141" y="363" width="302" height="38" rx="4" fill="var(--pg)"/><rect x="125" y="354" width="20" height="56" rx="8" fill="#C98B3B"/>
+<ellipse cx="290" cy="352" rx="100" ry="12" fill="var(--sau)"/><path d="M215 250 H365 C365 310 335 342 290 342 C245 342 215 310 215 250 Z" fill="var(--cup)"/>
+<ellipse cx="290" cy="250" rx="75" ry="12" fill="var(--rim)"/><ellipse cx="290" cy="252" rx="66" ry="9" fill="var(--cof)"/>
+<path d="M366 270 C412 262 412 322 356 316" fill="none" stroke="var(--cup)" stroke-width="14" stroke-linecap="round"/>
+<path d="M258 226 C242 202 274 186 258 160" fill="none" stroke="var(--stm)" stroke-width="8" stroke-linecap="round"/><path d="M292 226 C276 196 308 180 292 146" fill="none" stroke="var(--stm)" stroke-width="8" stroke-linecap="round"/><path d="M326 226 C310 202 342 186 326 160" fill="none" stroke="var(--stm)" stroke-width="8" stroke-linecap="round"/>
+</symbol>
+<symbol id="i-cup" viewBox="0 0 64 64"><ellipse cx="32" cy="52" rx="22" ry="4" fill="#F6F0E6" opacity=".35"/><path d="M14 26h36c0 12-7 22-18 22S14 38 14 26z" fill="#F6F0E6"/><ellipse cx="32" cy="26" rx="18" ry="4" fill="#6B3E26"/><path d="M50 29c8-1 8 11-1 11" fill="none" stroke="#F6F0E6" stroke-width="4" stroke-linecap="round"/><path d="M24 18c-3-3 3-5 0-9M32 18c-3-3 3-5 0-9M40 18c-3-3 3-5 0-9" fill="none" stroke="#F6F0E6" stroke-width="2.5" stroke-linecap="round" opacity=".7"/></symbol>
+<symbol id="i-glass" viewBox="0 0 64 64"><path d="M20 14h24l-3 40H23z" fill="#F6F0E6" opacity=".25" stroke="#F6F0E6" stroke-width="2"/><path d="M21.5 24h21l-1.2 12H22.7z" fill="#F6F0E6"/><path d="M22.4 36h19.2l-1.1 16H23.5z" fill="#6B3E26"/><rect x="26" y="19" width="7" height="7" rx="1.5" fill="#F6F0E6" transform="rotate(12 29 22)"/><rect x="34" y="21" width="6" height="6" rx="1.5" fill="#F6F0E6" transform="rotate(-10 37 24)"/><path d="M39 5l-3 24" stroke="#E0A458" stroke-width="3" stroke-linecap="round"/></symbol>
+<symbol id="i-juice" viewBox="0 0 64 64"><path d="M18 18h28l-2.5 36h-23z" fill="#E0A458"/><path d="M18 18h28l-.6 8H18.6z" fill="#F6F0E6" opacity=".55"/><circle cx="47" cy="19" r="9" fill="#F6F0E6"/><circle cx="47" cy="19" r="7" fill="#7FBF9A"/><path d="M47 12v14M40 19h14M42 14l10 10M52 14L42 24" stroke="#F6F0E6" stroke-width="1.2"/><path d="M26 8l4 14" stroke="#F6F0E6" stroke-width="3" stroke-linecap="round"/></symbol>
+<symbol id="i-bread" viewBox="0 0 64 64"><ellipse cx="32" cy="38" rx="21" ry="15" fill="#E0A458"/><path d="M18 34c5-7 23-7 28 0" fill="none" stroke="#A9481F" stroke-width="3" stroke-linecap="round" opacity=".55"/><circle cx="26" cy="40" r="1.6" fill="#A9481F"/><circle cx="35" cy="42" r="1.6" fill="#A9481F"/><circle cx="41" cy="37" r="1.6" fill="#A9481F"/><circle cx="29" cy="46" r="1.6" fill="#A9481F"/></symbol>
+<symbol id="i-sandwich" viewBox="0 0 64 64"><path d="M10 33C10 17 54 17 54 33z" fill="#E0A458"/><circle cx="24" cy="25" r="1.5" fill="#F6F0E6"/><circle cx="33" cy="22" r="1.5" fill="#F6F0E6"/><circle cx="42" cy="26" r="1.5" fill="#F6F0E6"/><path d="M8 36c4-4 8 3 12 0s8 3 12 0 8 3 12 0 8 3 12 0v5H8z" fill="#7FBF9A"/><rect x="9" y="40" width="46" height="5" rx="2" fill="#A9481F"/><path d="M10 47h44v2a6 6 0 0 1-6 6H16a6 6 0 0 1-6-6z" fill="#E0A458"/></symbol>
+<symbol id="i-bowl" viewBox="0 0 64 64"><path d="M8 34h48a24 22 0 0 1-48 0z" fill="#F6F0E6"/><circle cx="20" cy="30" r="7" fill="#A9481F"/><circle cx="33" cy="26" r="8" fill="#E0A458"/><circle cx="45" cy="30" r="7" fill="#7FBF9A"/><circle cx="27" cy="31" r="4" fill="#6B3E26" opacity=".8"/></symbol>
+<symbol id="i-cake" viewBox="0 0 64 64"><rect x="9" y="40" width="46" height="13" rx="3" fill="#F6F0E6"/><rect x="9" y="31" width="46" height="10" fill="#6B3E26"/><path d="M9 31a23 11 0 0 1 46 0z" fill="#E0A458"/><circle cx="32" cy="17" r="5" fill="#A9481F"/><path d="M32 12c0-4 3-6 6-6" stroke="#7FBF9A" stroke-width="2.5" fill="none" stroke-linecap="round"/></symbol>
+<symbol id="i-cookie" viewBox="0 0 64 64"><circle cx="32" cy="34" r="21" fill="#E0A458"/><circle cx="25" cy="27" r="3.5" fill="#6B3E26"/><circle cx="38" cy="30" r="3.5" fill="#6B3E26"/><circle cx="30" cy="40" r="3.5" fill="#6B3E26"/><circle cx="42" cy="42" r="3" fill="#6B3E26"/><circle cx="21" cy="40" r="2.6" fill="#6B3E26"/></symbol>
+<symbol id="i-tray" viewBox="0 0 64 64"><rect x="5" y="47" width="54" height="6" rx="3" fill="#F6F0E6" opacity=".5"/><g transform="translate(1 8) scale(.62)"><path d="M14 26h36c0 12-7 22-18 22S14 38 14 26z" fill="#F6F0E6"/><ellipse cx="32" cy="26" rx="18" ry="4" fill="#6B3E26"/><path d="M50 29c8-1 8 11-1 11" fill="none" stroke="#F6F0E6" stroke-width="4" stroke-linecap="round"/></g><g transform="translate(26 14) scale(.62)"><path d="M10 33C10 17 54 17 54 33z" fill="#E0A458"/><path d="M8 36c4-4 8 3 12 0s8 3 12 0 8 3 12 0 8 3 12 0v5H8z" fill="#7FBF9A"/><rect x="9" y="40" width="46" height="5" rx="2" fill="#A9481F"/><path d="M10 47h44v2a6 6 0 0 1-6 6H16a6 6 0 0 1-6-6z" fill="#E0A458"/></g></symbol>
+</defs></svg>
+
+<div class="shell">
+  <aside class="aside" aria-hidden="true">
+    <svg class="mark" viewBox="100 136 380 410"><use href="#mark" width="380" height="410" x="100" y="136"/></svg>
+    <h2>Uma pausa com capítulo.</h2>
+    <p>Café, comida e livros no mesmo lugar, no Centro de Manaus. Este site foi pensado para o celular: abra no seu telefone ou use a tela ao lado.</p>
+  </aside>
+
+  <div class="app" id="app">
+    <header class="top">
+      <a class="brand" href="#inicio"><svg class="mark" viewBox="100 136 380 410" aria-hidden="true"><use href="#mark" width="380" height="410" x="100" y="136"/></svg><span>Página <i>&amp;</i> Pão</span></a>
+      <span class="status" id="status">Horário</span>
+    </header>
+
+    <main>
+      <!-- INÍCIO -->
+      <section class="view" id="v-inicio">
+        <div class="hero">
+          <svg class="art" viewBox="100 136 380 410" role="img" aria-label="Xícara de café fumegante sobre três livros">
+            <rect x="110" y="470" width="360" height="64" rx="8" fill="#A9481F"/><rect x="126" y="480" width="330" height="44" rx="4" fill="#F6F0E6"/><rect x="110" y="470" width="22" height="64" rx="8" fill="#8F3A15"/>
+            <rect x="140" y="410" width="320" height="60" rx="8" fill="#2E5E4E"/><rect x="156" y="419" width="292" height="42" rx="4" fill="#EDE3D2"/><rect x="140" y="410" width="20" height="60" rx="8" fill="#244B3E"/>
+            <rect x="125" y="354" width="330" height="56" rx="8" fill="#E0A458"/><rect x="141" y="363" width="302" height="38" rx="4" fill="#F6F0E6"/><rect x="125" y="354" width="20" height="56" rx="8" fill="#C98B3B"/>
+            <ellipse cx="290" cy="352" rx="100" ry="12" fill="#EDE3D2"/>
+            <path d="M215 250 H365 C365 310 335 342 290 342 C245 342 215 310 215 250 Z" fill="#F6F0E6"/><ellipse cx="290" cy="250" rx="75" ry="12" fill="#F6F0E6"/><ellipse cx="290" cy="252" rx="66" ry="9" fill="#6B3E26"/>
+            <path d="M366 270 C412 262 412 322 356 316" fill="none" stroke="#F6F0E6" stroke-width="14" stroke-linecap="round"/>
+            <path class="steam s1" d="M258 226 C242 202 274 186 258 160" fill="none" stroke="#D9CBB8" stroke-width="8" stroke-linecap="round"/>
+            <path class="steam s2" d="M292 226 C276 196 308 180 292 146" fill="none" stroke="#D9CBB8" stroke-width="8" stroke-linecap="round"/>
+            <path class="steam s3" d="M326 226 C310 202 342 186 326 160" fill="none" stroke="#D9CBB8" stroke-width="8" stroke-linecap="round"/>
+          </svg>
+          <h1>Café, comida e livros no mesmo lugar.</h1>
+          <p>Um café-livraria no Centro de Manaus. Sem pressa: tome um café, coma bem, leia um pouco e leve um livro para casa.</p>
+          <div class="btns">
+            <a class="btn amber" href="#cardapio">Ver o cardápio</a>
+            <a class="btn ghost" href="#livros">Livros e clube</a>
+          </div>
+        </div>
+
+        <div class="sec-h"><h2>Hoje na casa</h2><a href="#cardapio">Ver tudo</a></div>
+        <div class="rail" id="rail" aria-label="Destaques do cardápio"></div>
+
+        <div class="banner">
+          <h3>Clube do livro</h3>
+          <p>Por R$ 30 por mês, você ganha o cartão do leitor, encontros de leitura e desconto no café.</p>
+          <a class="btn" href="#livros">Pegar meu cartão</a>
+        </div>
+        <p class="fine">Página &amp; Pão é uma marca fictícia, criada para a disciplina de Empreendedorismo da UFAM.</p>
+      </section>
+
+      <!-- CARDÁPIO -->
+      <section class="view" id="v-cardapio" hidden>
+        <div class="menu-head">
+          <h2>Cardápio</h2>
+          <p class="sub">63 itens. Toque no + para montar a sua comanda.</p>
+          <label class="sw"><input type="checkbox" id="reg"><span class="tr"></span><span>Só itens regionais</span></label>
+        </div>
+        <div class="cats" id="cats" role="group" aria-label="Ir para a categoria"></div>
+        <div id="menu"></div>
+        <p class="legend"><span class="dot"></span>Item regional, com ingredientes da Amazônia.</p>
+        <p class="legend" style="padding-top:8px">Tem alguma alergia ou restrição? Avise o atendimento antes de pedir.</p>
+      </section>
+
+      <!-- LIVROS -->
+      <section class="view" id="v-livros" hidden>
+        <div class="pad" style="padding-top:26px">
+          <h2>Livros</h2>
+          <p class="sub">Cerca de mil livros de todos os gêneros, usados e novos. Leia por aqui, compre, alugue ou entre para o clube.</p>
+        </div>
+        <div class="shelf" aria-hidden="true"><svg id="shelf" viewBox="0 20 340 134" preserveAspectRatio="xMidYMax meet"></svg></div>
+        <div class="three">
+          <div><b>R$ 30</b><span>Comprar</span><small>usado ou novo</small></div>
+          <div><b>R$ 6</b><span>Alugar</span><small>por livro</small></div>
+          <div><b>R$ 30</b><span>Clube</span><small>por mês</small></div>
+        </div>
+        <div class="sec-h"><h2>Da prateleira local</h2></div>
+        <ul class="books" id="books"></ul>
+
+        <div class="sec-h"><h2>Seu cartão</h2></div>
+        <div class="card-leitor" aria-live="polite">
+          <div class="t">CARTÃO DO LEITOR · PÁGINA &amp; PÃO</div>
+          <div class="stamp">CLUBE</div>
+          <div class="nome" id="cardNome">Seu nome aqui</div>
+          <div class="meta"><span id="cardNum">Nº 0001</span><span>Válido por 1 mês</span></div>
+        </div>
+        <label class="field">Seu nome<input id="cn" autocomplete="given-name" placeholder="Como devemos chamar você?"></label>
+        <div class="pad"><button class="btn" type="button" id="cBtn">Entrar na lista de espera</button><p class="msg" id="cmsg" role="status"></p></div>
+      </section>
+
+      <!-- VISITE -->
+      <section class="view" id="v-visite" hidden>
+        <div class="pad" style="padding-top:26px"><h2>Visite</h2><p class="sub">Uma casa com 36 lugares e um cantinho para ler, no Centro de Manaus.</p></div>
+        <div class="open-card" id="openCard"><small id="oc1">Agora</small><h3 id="oc2">—</h3><p id="oc3"></p></div>
+        <div class="sec-h"><h2>Horários</h2></div>
+        <ul class="week" id="week"></ul>
+        <div class="sec-h"><h2>Como pedir</h2></div>
+        <div class="info">
+          <div><h3>No balcão</h3><p>Monte a comanda aqui no site e mostre a senha no caixa.</p></div>
+          <div><h3>Delivery</h3><p>Chame no WhatsApp e acompanhe as novidades no Instagram.</p></div>
+        </div>
+        <div class="cb">
+          <h3>Coffee break para empresas</h3>
+          <p>R$ 45 por pessoa, com café, salgados e doces.</p>
+          <label for="pes">Pessoas <output id="pesOut">10</output></label>
+          <input id="pes" type="range" min="5" max="80" step="1" value="10">
+          <div class="total"><span>Total</span><b id="encTot">R$ 450</b></div>
+          <button class="btn" type="button" id="encBtn" style="margin-top:14px">Pedir orçamento</button>
+          <p class="msg" id="encMsg" role="status"></p>
+        </div>
+      </section>
+    </main>
+
+    <button class="cbar" id="cbar" type="button" hidden><span><span class="n" id="cbarN">0</span>Ver comanda</span><span id="cbarR">R$ 0,00</span></button>
+    <nav class="tabs" aria-label="Seções">
+      <a href="#inicio" data-t="inicio"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11l8-7 8 7v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/></svg>Início</a>
+      <a href="#cardapio" data-t="cardapio"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h11v5a5 5 0 0 1-5 5H10a5 5 0 0 1-5-5z"/><path d="M16 9h2a2 2 0 0 1 0 4h-2M8 3v2M12 3v2"/></svg>Cardápio</a>
+      <a href="#livros" data-t="livros"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h9a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h9"/></svg>Livros</a>
+      <a href="#visite" data-t="visite"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/></svg>Visite</a>
+    </nav>
+  </div>
+</div>
+
+<div class="scrim" id="scrim" hidden></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Sua comanda" hidden></div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(function(){
+  var MENU=[
+    ["Cafés quentes","i-cup","t-caf","Do espresso ao mocha",[["Espresso",10],["Espresso duplo",16],["Café coado regional",16,1],["Americano",16],["Latte",21],["Cappuccino",22],["Mocha",24]]],
+    ["Cafés gelados","i-glass","t-mat","Para os dias de calor",[["Iced coffee",20],["Cold brew",22],["Iced latte",23],["Espresso tônica",26],["Iced mocha",26],["Soda italiana",26],["Cappuccino gelado",28]]],
+    ["Sucos e bebidas","i-juice","t-ter","Frutas da região",[["Guaraná da Amazônia",12,1],["Chá quente",14],["Limonada",16],["Suco natural",19],["Suco de cupuaçu",20,1],["Suco de taperebá",20,1],["Chocolate quente",24]]],
+    ["Salgados","i-bread","t-caf","Para beliscar",[["Pão de queijo",6],["Pamonha",14,1],["Folhado de queijo",14],["Quiche de frango",22],["Tapioca de coalho",24,1],["Quiche de tucumã",26,1],["Pão com tucumã",28,1]]],
+    ["Sanduíches","i-sandwich","t-ter","Feitos na hora",[["Misto quente",24],["Sanduíche caprese",30],["Sanduíche de frango",30],["Sanduíche de atum",33],["X-caboquinho",36,1],["Sanduíche de peru e brie",38],["Carne seca e coalho",38,1]]],
+    ["Tostados e saudáveis","i-bowl","t-mat","Leves e coloridos",[["Porção de tostados",18],["Açaí na tigela",28,1],["Tostado de ovo e abacate",29],["Salada da casa",30],["Bowl de frutas",32],["Tostado caprese",34],["Tostado de cogumelos",35]]],
+    ["Bolos e tortas","i-cake","t-caf","Por fatia",[["Bolo de banana",21],["Bolo de chocolate",21],["Muffin de laranja",21],["Cuca de morango",21],["Bolo de macaxeira",22,1],["Bolo de castanha",22,1],["Torta de limão",22]]],
+    ["Doces e biscoitos","i-cookie","t-ter","Para fechar bem",[["Brigadeiro de cupuaçu",9,1],["Bola de sorvete",10],["Cookie",13],["Palha italiana",14],["Pudim",14],["Brownie",18],["Brownie de cupuaçu",20,1]]],
+    ["Combos e café da manhã","i-tray","t-mat","Mais por menos",[["Kit lanche para viagem",32],["Combo doce + café",34],["Combo tapioca + café",36,1],["Café da manhã regional",44,1],["Combo tostado + suco",44],["Coffee break (por pessoa)",45],["Combo sanduíche + café",46]]]
+  ];
+  var GROUPS=[["Cafés","Cafés quentes"],["Bebidas","Sucos e bebidas"],["Comidas","Salgados"],["Doces","Bolos e tortas"],["Combos","Combos e café da manhã"]];
+  var DESC={"Espresso": "Dose curta de café puro, 30 ml.","Espresso duplo": "Duas doses de espresso, 60 ml.","Café coado regional": "Café de torrefação regional, coado na hora. 200 ml.","Americano": "Espresso com água quente.","Latte": "Espresso com leite vaporizado e uma fina camada de espuma.","Cappuccino": "Espresso, leite vaporizado e espuma, com canela.","Mocha": "Espresso, chocolate e leite vaporizado.","Iced coffee": "Café filtrado com gelo.","Cold brew": "Café extraído a frio por 12 horas, servido com gelo.","Iced latte": "Espresso, leite e gelo.","Espresso tônica": "Espresso duplo, água tônica e gelo.","Iced mocha": "Espresso, leite, chocolate e gelo.","Soda italiana": "Água com gás, xarope de frutas vermelhas e limão.","Cappuccino gelado": "Espresso, leite e gelo, com calda de chocolate ou caramelo.","Guaraná da Amazônia": "Guaraná gelado. 350 ml.","Chá quente": "Chás de ervas e frutas. Pergunte os sabores do dia.","Limonada": "Limão, açúcar e gelo.","Suco natural": "Acerola, goiaba ou manga, sem açúcar adicionado.","Suco de cupuaçu": "Polpa de cupuaçu batida com água gelada. 300 ml.","Suco de taperebá": "Polpa de taperebá, também chamado de cajá, batida com água gelada. 300 ml.","Chocolate quente": "Chocolate ao leite cremoso, com chantilly.","Pão de queijo": "Massa de queijo, assada na hora.","Pamonha": "Milho verde cozido, com queijo coalho.","Folhado de queijo": "Massa folhada com queijo muçarela e orégano.","Quiche de frango": "Frango desfiado, requeijão e ervas em massa amanteigada.","Tapioca de coalho": "Goma de tapioca, queijo coalho e manteiga.","Quiche de tucumã": "Tucumã, queijo coalho e ovos em massa amanteigada.","Pão com tucumã": "Pão francês na chapa, com tucumã e manteiga.","Misto quente": "Pão, presunto e queijo muçarela, na chapa.","Sanduíche caprese": "Pão de fermentação natural, muçarela de búfala, tomate, rúcula e pesto.","Sanduíche de frango": "Pão de fermentação natural, creme de frango, muçarela e cebola caramelizada.","Sanduíche de atum": "Pão integral, pasta de atum, alface e tomate.","X-caboquinho": "Pão francês, tucumã, queijo coalho e banana frita.","Sanduíche de peru e brie": "Pão de fermentação natural, peito de peru, queijo brie e maionese de abacate.","Carne seca e coalho": "Pão francês, carne seca desfiada e queijo coalho.","Porção de tostados": "Torradas de pão de fermentação natural, com manteiga.","Açaí na tigela": "Açaí batido com banana, granola e mel.","Tostado de ovo e abacate": "Pão integral, maionese de abacate, tomate-cereja e ovo.","Salada da casa": "Mix de folhas, tomate-cereja, granola salgada e picles de cebola roxa.","Bowl de frutas": "Frutas do dia, iogurte, granola e mel.","Tostado caprese": "Pão integral, muçarela de búfala, pesto e tomate.","Tostado de cogumelos": "Pão integral, maionese de abacate e mix de cogumelos.","Bolo de banana": "Banana, canela e castanha.","Bolo de chocolate": "Massa de chocolate com cobertura de brigadeiro.","Muffin de laranja": "Laranja com cobertura crocante de pistache.","Cuca de morango": "Massa macia com morangos e farofa doce.","Bolo de macaxeira": "Macaxeira, coco e manteiga.","Bolo de castanha": "Castanha-do-pará na massa, com cobertura de chocolate.","Torta de limão": "Base de biscoito, creme de limão e merengue.","Brigadeiro de cupuaçu": "Brigadeiro feito com polpa de cupuaçu.","Bola de sorvete": "Sorvete de creme, uma bola.","Cookie": "Massa de chocolate com gotas de chocolate.","Palha italiana": "Brigadeiro com biscoito triturado.","Pudim": "Leite condensado e ovos, com calda de caramelo.","Brownie": "Chocolate meio amargo, bem úmido.","Brownie de cupuaçu": "Brownie com recheio de cupuaçu e castanha.","Kit lanche para viagem": "Sanduíche, bebida e doce, em embalagem para levar.","Combo doce + café": "Uma fatia de bolo ou um doce à escolha e um café coado.","Combo tapioca + café": "Tapioca de coalho e um café coado.","Café da manhã regional": "Tapioca, ovo mexido, suco e café.","Combo tostado + suco": "Um tostado à escolha e um suco natural.","Coffee break (por pessoa)": "Café, salgados e doces, para grupos a partir de 5 pessoas.","Combo sanduíche + café": "Um sanduíche à escolha e um café coado."};
+  var ITEMS=[],id=0;
+  MENU.forEach(function(c){c[4].forEach(function(i){ITEMS.push({id:id++,cat:c[0],n:i[0],p:i[1],r:!!i[2]});});});
+  var FEAT=[["X-caboquinho","i-sandwich","t-ter"],["Café coado regional","i-cup","t-caf"],["Suco de cupuaçu","i-juice","t-mat"],["Bolo de macaxeira","i-cake","t-caf"],["Combo sanduíche + café","i-tray","t-ter"]];
+  function $(s){return document.querySelector(s);}
+  function byName(n){return ITEMS.filter(function(i){return i.n===n;})[0];}
+  function brl(n){return 'R$ '+Math.round(n).toLocaleString('pt-BR');}
+  function brl2(n){return 'R$ '+n.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});}
+  var toastT;function toast(t){var e=$('#toast');e.textContent=t;e.hidden=false;clearTimeout(toastT);toastT=setTimeout(function(){e.hidden=true;},2200);}
+
+  /* ---------- horário (Manaus) ---------- */
+  var DIAS=['domingo','segunda','terça','quarta','quinta','sexta','sábado'];
+  function agora(){
+    var p=new Intl.DateTimeFormat('en-US',{timeZone:'America/Manaus',hour:'numeric',minute:'numeric',weekday:'short',hourCycle:'h23'}).formatToParts(new Date()),o={};
+    p.forEach(function(x){o[x.type]=x.value;});
+    var wd={Sun:0,Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6}[o.weekday];
+    return {d:wd,h:+o.hour,m:+o.minute};
+  }
+  function statusInfo(){
+    var n=agora(),min=n.h*60+n.m,openDay=n.d!==0;
+    if(openDay&&min>=480&&min<1200)return {on:true,t1:'Aberto agora',t2:'Até as 20h',t3:'Venha tomar um café. A cozinha funciona até o fechamento.',short:'Aberto agora'};
+    var next,when;
+    if(openDay&&min<480){when='hoje às 8h';next='hoje';}
+    else{var nd=(n.d+1)%7;if(nd===0)nd=1;next=DIAS[nd];when=(nd===(n.d+1)%7?'amanhã':'na segunda')+' às 8h';}
+    return {on:false,t1:'Fechado agora',t2:'Abrimos '+when,t3:'Enquanto isso, monte a sua comanda e veja os livros.',short:'Fechado'};
+  }
+  function renderStatus(){
+    var s=statusInfo(),el=$('#status');el.className='status'+(s.on?' on':'');el.textContent=s.short;
+    var c=$('#openCard');c.className='open-card'+(s.on?'':' closed');$('#oc1').textContent=s.t1;$('#oc2').textContent=s.t2;$('#oc3').textContent=s.t3;
+    var n=agora(),w='';
+    [1,2,3,4,5,6,0].forEach(function(d){w+='<li'+(d===n.d?' class="today"':'')+'><span>'+DIAS[d].charAt(0).toUpperCase()+DIAS[d].slice(1)+(d===n.d?' · hoje':'')+'</span><span>'+(d===0?'Fechado':'8h às 20h')+'</span></li>';});
+    $('#week').innerHTML=w;
+  }
+
+  /* ---------- telas ---------- */
+  var VIEWS=['inicio','cardapio','livros','visite'];
+  function show(v){
+    if(VIEWS.indexOf(v)<0)v='inicio';
+    VIEWS.forEach(function(x){$('#v-'+x).hidden=(x!==v);});
+    document.querySelectorAll('.tabs a').forEach(function(a){if(a.getAttribute('data-t')===v)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
+    window.scrollTo(0,0);
+    if(v==='visite')renderStatus();
+  }
+  window.addEventListener('hashchange',function(){show(location.hash.slice(1));});
+
+  /* ---------- comanda ---------- */
+  var cart={},onlyReg=false;
+  function qty(k){return cart[k]||0;}
+  function ctlHtml(k){
+    var q=qty(k);
+    return q?'<div class="step"><button type="button" data-m="'+k+'" aria-label="Tirar uma unidade">−</button><b>'+q+'</b><button type="button" data-a="'+k+'" aria-label="Adicionar mais uma unidade">+</button></div>'
+            :'<button class="add" type="button" data-a="'+k+'" aria-label="Adicionar à comanda">+</button>';
+  }
+  function renderRail(){
+    $('#rail').innerHTML=FEAT.map(function(f){
+      var it=byName(f[0]);
+      return '<div class="card"><div class="tile '+f[2]+'"><svg aria-hidden="true"><use href="#'+f[1]+'"/></svg></div><div class="in"><b>'+it.n+'</b><div class="row"><span class="pr">R$ '+it.p+'</span><button class="mini" type="button" data-a="'+it.id+'" aria-label="Adicionar '+it.n+' à comanda">+</button></div></div></div>';
+    }).join('');
+  }
+  function renderCats(){
+    $('#cats').innerHTML=GROUPS.map(function(g,i){return '<button type="button" class="cat" data-g="'+g[1]+'" aria-pressed="'+(i===0)+'">'+g[0]+'</button>';}).join('');
+  }
+  function renderMenu(){
+    var html='';
+    MENU.forEach(function(c){
+      var list=ITEMS.filter(function(i){return i.cat===c[0]&&(!onlyReg||i.r);});
+      if(!list.length)return;
+      html+='<div class="grp" id="g-'+c[0].replace(/\W+/g,'-')+'" data-cat="'+c[0]+'"><div class="grp-h"><div class="ico '+c[2]+'"><svg aria-hidden="true"><use href="#'+c[1]+'"/></svg></div><h3>'+c[0]+'<small>'+c[3]+'</small></h3></div><ul class="list">'+list.map(function(i){
+        return '<li data-k="'+i.id+'"><span class="nm"><span class="t">'+(i.r?'<span class="dot" title="Regional"></span>':'')+'<span>'+i.n+'</span></span><small>'+DESC[i.n]+'</small></span><span class="pr">R$ '+i.p+'</span><span class="ctl">'+ctlHtml(i.id)+'</span></li>';
+      }).join('')+'</ul></div>';
+    });
+    $('#menu').innerHTML=html||'<p class="none">Nenhum item regional nesta lista.</p>';
+    observe();
+  }
+  function refreshItem(k){
+    var li=document.querySelector('#menu li[data-k="'+k+'"]');
+    if(li)li.querySelector('.ctl').innerHTML=ctlHtml(k);
+  }
+  function total(){var t=0,c=0;Object.keys(cart).forEach(function(k){if(cart[k]>0){t+=ITEMS[k].p*cart[k];c+=cart[k];}});return {t:t,c:c};}
+  function updateBar(){
+    var s=total();
+    $('#cbar').hidden=s.c===0;$('#cbarN').textContent=s.c;$('#cbarR').textContent=brl2(s.t);
+    if(!$('#sheet').hidden)renderSheet();
+  }
+  function change(k,d){
+    cart[k]=Math.max(0,qty(k)+d);
+    refreshItem(k);updateBar();
+    if(d>0&&navigator.vibrate)navigator.vibrate(8);
+  }
+  function renderSheet(mode){
+    var s=total(),sh=$('#sheet');
+    if(mode==='sent'){return;}
+    if(!s.c){closeSheet();return;}
+    var lines=Object.keys(cart).filter(function(k){return cart[k]>0;}).map(function(k){var it=ITEMS[k];return '<li><span class="q">'+cart[k]+'×</span><span>'+it.n+'</span><span class="d"></span><b>'+brl2(it.p*cart[k])+'</b></li>';}).join('');
+    sh.innerHTML='<header><h3>Sua comanda</h3><button class="x" id="close" type="button">Fechar</button></header><ul>'+lines+'</ul><div class="tot"><span>Total</span><span>'+brl2(s.t)+'</span></div><div class="acts"><button class="btn" id="send" type="button">Enviar para o balcão</button><button class="btn alt" id="clear" type="button">Limpar comanda</button></div>';
+  }
+  function openSheet(){renderSheet();if($('#cbar').hidden)return;$('#sheet').hidden=false;$('#scrim').hidden=false;var c=$('#close');if(c)c.focus();}
+  function closeSheet(){$('#sheet').hidden=true;$('#scrim').hidden=true;}
+  function sendOrder(){
+    var n=Math.floor(Math.random()*40)+10,s=total();
+    $('#sheet').innerHTML='<header><h3>Sua senha</h3><button class="x" id="close" type="button">Fechar</button></header><div class="ticket"><div class="stamp">Pedido anotado</div><div class="senha">P&amp;P-'+(n<10?'0':'')+n+'</div><p>Mostre esta senha no caixa. Total de '+brl2(s.t)+'.</p><p style="margin-top:10px;font-size:.9rem">Isto é uma simulação: nada foi enviado.</p></div>';
+    cart={};refreshAll();$('#cbar').hidden=true;
+  }
+  function refreshAll(){renderMenu();}
+  document.addEventListener('click',function(e){
+    var a=e.target.closest('[data-a]'),m=e.target.closest('[data-m]');
+    if(a){var k=+a.getAttribute('data-a');change(k,1);if(a.classList.contains('mini'))toast(ITEMS[k].n+' na comanda');return;}
+    if(m){change(+m.getAttribute('data-m'),-1);return;}
+    if(e.target.closest('#cbar')){openSheet();return;}
+    if(e.target.closest('#close')||e.target.id==='scrim'){closeSheet();return;}
+    if(e.target.closest('#clear')){cart={};refreshAll();updateBar();closeSheet();return;}
+    if(e.target.closest('#send')){sendOrder();return;}
+  });
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')closeSheet();});
+  $('#reg').addEventListener('change',function(e){onlyReg=e.target.checked;renderMenu();});
+  $('#cats').addEventListener('click',function(e){
+    var b=e.target.closest('.cat');if(!b)return;
+    var t=document.querySelector('.grp[data-cat="'+b.getAttribute('data-g')+'"]');
+    if(t)t.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',block:'start'});
+  });
+  var io;
+  function observe(){
+    if(io)io.disconnect();
+    if(!('IntersectionObserver' in window))return;
+    io=new IntersectionObserver(function(es){
+      es.forEach(function(en){
+        if(!en.isIntersecting)return;
+        var c=en.target.getAttribute('data-cat'),gi=0;
+        GROUPS.forEach(function(g,i){var gi0=MENU.map(function(m){return m[0];}).indexOf(g[1]);if(MENU.map(function(m){return m[0];}).indexOf(c)>=gi0)gi=i;});
+        document.querySelectorAll('.cat').forEach(function(b,i){b.setAttribute('aria-pressed',String(i===gi));});
+      });
+    },{rootMargin:'-140px 0px -65% 0px'});
+    document.querySelectorAll('.grp').forEach(function(g){io.observe(g);});
+  }
+
+  /* ---------- livros ---------- */
+  var COLORS=['#A9481F','#2E5E4E','#E0A458','#6B3E26','#C98B3B','#244B3E','#8F3A15','#2A1C14'];
+  (function shelf(){
+    var x=14,svg='',seed=7;
+    function rnd(){seed=(seed*9301+49297)%233280;return seed/233280;}
+    while(x<318){
+      var w=14+Math.floor(rnd()*14),h=70+Math.floor(rnd()*58),c=COLORS[Math.floor(rnd()*COLORS.length)],t=rnd()>.7;
+      svg+='<g transform="'+(t?'rotate(-6 '+(x+w/2)+' 150) ':'')+'"><rect x="'+x+'" y="'+(150-h)+'" width="'+w+'" height="'+h+'" rx="2" fill="'+c+'"/><rect x="'+(x+2)+'" y="'+(150-h+10)+'" width="'+(w-4)+'" height="3" fill="#F6F0E6" opacity=".55"/><rect x="'+(x+2)+'" y="'+(150-h+18)+'" width="'+(w-4)+'" height="2" fill="#F6F0E6" opacity=".35"/></g>';
+      x+=w+(t?10:2);
+    }
+    $('#shelf').innerHTML=svg+'<rect x="0" y="148" width="340" height="6" fill="#2A1C14" opacity=".25"/>';
+  })();
+  var BOOKS=[["Dois Irmãos","Milton Hatoum","#A9481F"],["Órfãos do Eldorado","Milton Hatoum","#2E5E4E"],["Mad Maria","Márcio Souza","#C98B3B"],["Galvez, Imperador do Acre","Márcio Souza","#6B3E26"],["Faz escuro mas eu canto","Thiago de Mello","#244B3E"]];
+  var reserved={};
+  function renderBooks(){
+    $('#books').innerHTML=BOOKS.map(function(b,i){
+      return '<li class="bk"><span class="spine" style="background:'+b[2]+'"></span><div><b>'+b[0]+'</b><span>'+b[1]+'</span></div><button class="res'+(reserved[i]?' on':'')+'" type="button" data-b="'+i+'">'+(reserved[i]?'Reservado':'Alugar R$ 6')+'</button></li>';
+    }).join('');
+  }
+  $('#books').addEventListener('click',function(e){var b=e.target.closest('.res');if(!b)return;var i=b.getAttribute('data-b');reserved[i]=!reserved[i];renderBooks();toast(reserved[i]?'Livro reservado (simulação)':'Reserva cancelada');});
+  renderBooks();
+  $('#cn').addEventListener('input',function(e){
+    var v=e.target.value.trim();$('#cardNome').textContent=v||'Seu nome aqui';
+    $('#cardNum').textContent='Nº '+String(1+(v.length*37)%999).padStart(4,'0');
+  });
+  $('#cBtn').addEventListener('click',function(){
+    var n=$('#cn').value.trim(),m=$('#cmsg');
+    m.textContent=n?('Anotado, '+n.split(' ')[0]+'! É uma simulação: nada foi enviado.'):'Escreva o seu nome para pegar o cartão.';
+  });
+
+  /* ---------- coffee break ---------- */
+  function encUpdate(){var p=+$('#pes').value;$('#pesOut').textContent=p;$('#encTot').textContent=brl(p*45);$('#encMsg').textContent='';}
+  $('#pes').addEventListener('input',encUpdate);
+  $('#encBtn').addEventListener('click',function(){var p=+$('#pes').value;$('#encMsg').textContent='Orçamento simulado para '+p+' pessoas: '+brl2(p*45)+'. Nada foi enviado.';});
+
+  renderRail();renderCats();renderMenu();renderStatus();encUpdate();
+  setInterval(renderStatus,60000);
+  show(location.hash.slice(1));
+})();
+</script>
+</body>
+</html>

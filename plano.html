@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Plano de negócio · Página &amp; Pão</title>
+<meta name="description" content="Simulador do plano de negócio do Página & Pão: lucro, ponto de equilíbrio e retorno do investimento.">
+<meta name="theme-color" content="#F6F0E6">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Página &amp; Pão">
+<meta property="og:title" content="Plano de negócio · Página &amp; Pão">
+<meta property="og:description" content="Simulador do plano de negócio do Página & Pão: lucro, ponto de equilíbrio e retorno do investimento.">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Nunito+Sans:wght@400;600;700&display=swap">
+<style>
+:root{
+  box-sizing:border-box;
+  --bg:#F6F0E6; --surface:#FBF7EF; --ink:#2A1C14; --muted:#6F5C4D; --line:#D9CBB8;
+  --deep:#2A1C14; --on-deep:#F6F0E6; --on-deep-muted:#D9CBB8;
+  --accent:#A9481F; --on-accent:#F6F0E6; --hl:#E0A458; --neg:#A3322B;
+  --fh:'Cormorant Garamond',Georgia,'Times New Roman',serif;
+  --fu:'Nunito Sans','Trebuchet MS',Arial,sans-serif;
+  --cup:#2A1C14; --rim:#4A3326; --cof:#8A5A3C; --stm:#8A7664; --pg:#E4D7C3; --sau:#D9CBB8;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#1B120D; --surface:#2A1C14; --ink:#F6F0E6; --muted:#BFAE9C; --line:#4A382B;
+    --deep:#120C08; --accent:#E8957A; --on-accent:#2A1C14; --neg:#F1948D;
+    --cup:#F6F0E6; --rim:#EDE3D2; --cof:#6B3E26; --stm:#D9CBB8; --pg:#F6F0E6; --sau:#EDE3D2;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1B120D; --surface:#2A1C14; --ink:#F6F0E6; --muted:#BFAE9C; --line:#4A382B;
+  --deep:#120C08; --accent:#E8957A; --on-accent:#2A1C14; --neg:#F1948D;
+  --cup:#F6F0E6; --rim:#EDE3D2; --cof:#6B3E26; --stm:#D9CBB8; --pg:#F6F0E6; --sau:#EDE3D2;
+}
+*,*::before,*::after{box-sizing:inherit;-webkit-tap-highlight-color:transparent}
+html{background:var(--bg);-webkit-text-size-adjust:100%}
+body{margin:0 auto;max-width:560px;min-height:100vh;background:var(--bg);color:var(--ink);font-family:var(--fu);font-size:1.0625rem;line-height:1.55;padding-top:env(safe-area-inset-top,0px)}
+h1,h2,h3{font-family:var(--fh);font-weight:700;margin:0;line-height:1.02}
+h1{font-size:clamp(2.7rem,12vw,3.6rem)}
+h2{font-size:2.5rem}
+p{margin:0}
+:focus-visible{outline:3px solid var(--hl);outline-offset:2px;border-radius:6px}
+.mark{display:block}
+
+/* topo */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);display:flex;align-items:center;gap:10px;height:56px;padding:0 20px;border-bottom:1px solid var(--line)}
+.top .mark{width:28px;height:auto}
+.top b{font-family:var(--fh);font-size:1.45rem}
+.top i{font-style:italic;font-weight:600;color:var(--accent)}
+
+/* telas */
+.view{padding:28px 20px 190px}
+.view[hidden]{display:none}
+.sub{color:var(--muted);margin-top:8px}
+
+/* início */
+.hero .mark{width:110px;margin-bottom:22px}
+.hero h1{margin-bottom:16px}
+.hero .info{color:var(--muted);margin-bottom:32px}
+.btn{display:flex;align-items:center;justify-content:center;min-height:54px;border-radius:14px;font-family:var(--fu);font-weight:700;font-size:1.05rem;text-decoration:none;border:2px solid var(--accent);background:var(--accent);color:var(--on-accent);cursor:pointer;width:100%;padding:0 18px}
+.btn.alt{background:transparent;color:var(--ink);border-color:var(--ink)}
+.btn+.btn{margin-top:12px}
+.fine{margin-top:40px;font-size:.9rem;color:var(--muted)}
+
+/* cardápio */
+.chips{display:flex;gap:8px;overflow-x:auto;margin:22px -20px 6px;padding:0 20px 8px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;min-height:44px;padding:0 18px;border-radius:999px;border:2px solid var(--line);background:transparent;color:var(--ink);font:700 .98rem var(--fu);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.grp{margin-top:22px}
+.grp h3{font-size:1.5rem;padding-bottom:6px;border-bottom:2px solid var(--ink)}
+.list{list-style:none;margin:0;padding:0}
+.list li{display:flex;align-items:center;gap:10px;min-height:56px;border-bottom:1px solid var(--line)}
+.nm{flex:1;line-height:1.2}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--accent);margin-right:8px}
+.pr{font-weight:700;font-variant-numeric:tabular-nums}
+.add{flex:none;width:44px;height:44px;border-radius:50%;border:2px solid var(--ink);background:transparent;color:var(--ink);font:700 1.5rem/1 var(--fu);cursor:pointer}
+.add:active{background:var(--hl);border-color:var(--hl);color:#2A1C14}
+.legend{margin-top:18px;font-size:.9rem;color:var(--muted)}
+
+/* barra e folha da comanda */
+.cbar{position:fixed;left:50%;transform:translateX(-50%);width:calc(100% - 24px);max-width:536px;bottom:calc(64px + env(safe-area-inset-bottom,0px) + 8px);z-index:25;display:flex;justify-content:space-between;align-items:center;min-height:54px;padding:0 20px;border:0;border-radius:14px;background:var(--ink);color:var(--bg);font:700 1rem var(--fu);cursor:pointer}
+.cbar[hidden]{display:none}
+.scrim{position:fixed;inset:0;background:rgba(20,12,8,.55);z-index:40}
+.scrim[hidden]{display:none}
+.sheet{position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:100%;max-width:560px;max-height:78vh;overflow:auto;z-index:45;background:var(--surface);border-radius:20px 20px 0 0;padding:20px 20px calc(24px + env(safe-area-inset-bottom,0px))}
+.sheet[hidden]{display:none}
+.sheet header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.sheet h3{font-size:1.8rem}
+.x{min-height:44px;padding:0 14px;border:0;background:none;color:var(--accent);font:700 1rem var(--fu);cursor:pointer}
+.sheet ul{list-style:none;margin:0;padding:0}
+.sheet li{display:grid;grid-template-columns:1fr auto;gap:2px 12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.qty{grid-column:1/-1;display:flex;align-items:center;gap:14px}
+.qty button{width:40px;height:40px;border-radius:50%;border:2px solid var(--ink);background:transparent;color:var(--ink);font:700 1.3rem/1 var(--fu);cursor:pointer}
+.total{display:flex;justify-content:space-between;font-weight:700;font-size:1.3rem;padding:16px 0 4px}
+.cmp{color:var(--muted);font-size:.95rem}
+.sheet .btn{margin-top:16px}
+
+/* livros */
+.rows{margin-top:22px}
+.rows>div{padding:20px 0;border-top:1px solid var(--line)}
+.rows .big{font-family:var(--fh);font-weight:700;font-size:2.7rem;line-height:1;color:var(--accent)}
+.rows .big small{font:600 .95rem var(--fu);color:var(--muted)}
+.rows h3{font-size:1.7rem;margin:6px 0 4px}
+.rows p{color:var(--muted)}
+.field{display:flex;flex-direction:column;gap:6px;margin-top:16px;font-weight:700;font-size:.95rem}
+.field input{font:400 1.05rem var(--fu);min-height:52px;padding:0 14px;border-radius:12px;border:2px solid var(--line);background:var(--surface);color:var(--ink)}
+.field input:focus{border-color:var(--ink);outline:none}
+.msg{min-height:1.5em;margin-top:12px;font-weight:700;color:var(--accent)}
+
+/* plano */
+.chips.sc{margin-bottom:0}
+.result{position:sticky;top:calc(56px + env(safe-area-inset-top,0px));z-index:15;margin:16px -20px 0;padding:14px 20px 12px;background:var(--deep);color:var(--on-deep)}
+.result .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.result span{display:block;font-size:.88rem;color:var(--on-deep-muted)}
+.result b{display:block;font-family:var(--fh);font-weight:700;font-size:2.2rem;line-height:1.05;white-space:nowrap;color:var(--hl);font-variant-numeric:tabular-nums}
+.result.neg b{color:#F6B2AB}
+.result p{margin-top:8px;font-size:.84rem;line-height:1.35;color:var(--on-deep-muted)}
+.ctl{margin-top:24px}
+.ctl label{display:flex;justify-content:space-between;font-weight:700}
+.ctl output{color:var(--accent)}
+.ctl small{color:var(--muted)}
+input[type=range]{width:100%;height:44px;margin:4px 0 0;accent-color:var(--accent)}
+.chart{margin-top:30px}
+.chart h3{font-size:1.5rem;margin-bottom:6px}
+.chart svg{display:block;width:100%;height:auto}
+.chart text{font:600 12px var(--fu);fill:var(--muted)}
+.chart .lab{fill:var(--ink);font-size:13px}
+details{margin-top:28px;color:var(--muted);font-size:.98rem}
+details summary{font-weight:700;color:var(--ink);cursor:pointer;min-height:44px}
+
+/* menu de baixo */
+.tabs{position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:100%;max-width:560px;z-index:30;display:grid;grid-template-columns:repeat(4,1fr);background:var(--bg);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+.tabs a{display:flex;align-items:center;justify-content:center;min-height:64px;text-decoration:none;color:var(--muted);font-weight:700;font-size:.95rem;border-top:3px solid transparent;margin-top:-1px}
+.tabs a[aria-current="page"]{color:var(--accent);border-top-color:var(--accent)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+.view{padding-bottom:48px}
+.foot{margin-top:36px;padding-top:18px;border-top:1px solid var(--line);font-size:.9rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><symbol id="mark" viewBox="100 136 380 410">
+<rect x="110" y="470" width="360" height="64" rx="8" fill="#A9481F"/><rect x="126" y="480" width="330" height="44" rx="4" fill="var(--pg)"/><rect x="110" y="470" width="22" height="64" rx="8" fill="#8F3A15"/>
+<rect x="140" y="410" width="320" height="60" rx="8" fill="#2E5E4E"/><rect x="156" y="419" width="292" height="42" rx="4" fill="var(--pg)"/><rect x="140" y="410" width="20" height="60" rx="8" fill="#244B3E"/>
+<rect x="125" y="354" width="330" height="56" rx="8" fill="#E0A458"/><rect x="141" y="363" width="302" height="38" rx="4" fill="var(--pg)"/><rect x="125" y="354" width="20" height="56" rx="8" fill="#C98B3B"/>
+<ellipse cx="290" cy="352" rx="100" ry="12" fill="var(--sau)"/><path d="M215 250 H365 C365 310 335 342 290 342 C245 342 215 310 215 250 Z" fill="var(--cup)"/>
+<ellipse cx="290" cy="250" rx="75" ry="12" fill="var(--rim)"/><ellipse cx="290" cy="252" rx="66" ry="9" fill="var(--cof)"/>
+<path d="M366 270 C412 262 412 322 356 316" fill="none" stroke="var(--cup)" stroke-width="14" stroke-linecap="round"/>
+<path d="M258 226 C242 202 274 186 258 160" fill="none" stroke="var(--stm)" stroke-width="8" stroke-linecap="round"/><path d="M292 226 C276 196 308 180 292 146" fill="none" stroke="var(--stm)" stroke-width="8" stroke-linecap="round"/><path d="M326 226 C310 202 342 186 326 160" fill="none" stroke="var(--stm)" stroke-width="8" stroke-linecap="round"/>
+</symbol></defs></svg>
+<div class="top">
+  <svg class="mark" viewBox="100 136 380 410" aria-hidden="true"><use href="#mark" width="380" height="410" x="100" y="136"/></svg>
+  <b>Página <i>&amp;</i> Pão</b>
+</div>
+<main>
+  <section class="view" id="v-plano">
+    <h2>Plano em números</h2>
+    <p class="sub">Simulador do plano de negócio do Página &amp; Pão. Mexa nos números e veja o lucro e o retorno do investimento de R$ 120.000. O cenário base é o mesmo dos slides.</p>
+    <div class="chips sc" role="group" aria-label="Cenários">
+      <button class="chip" type="button" data-p="pes" aria-pressed="false">Pessimista</button>
+      <button class="chip" type="button" data-p="base" aria-pressed="true">Base</button>
+      <button class="chip" type="button" data-p="oti" aria-pressed="false">Otimista</button>
+    </div>
+    <div class="result" id="result" aria-live="polite"></div>
+    <div class="ctl"><label for="s-cpd">Clientes por dia <output id="o-cpd"></output></label><input id="s-cpd" type="range" min="20" max="100" step="1" value="65"></div>
+    <div class="ctl"><label for="s-tk">Ticket médio <output id="o-tk"></output></label><input id="s-tk" type="range" min="25" max="60" step="1" value="45"></div>
+    <div class="ctl"><label for="s-dias">Dias abertos no mês <output id="o-dias"></output></label><input id="s-dias" type="range" min="24" max="30" step="1" value="26"></div>
+    <div class="ctl"><label for="s-enc">Encomendas de empresas por mês <output id="o-enc"></output></label><input id="s-enc" type="range" min="0" max="30" step="1" value="16"><small>Cada encomenda vale R$ 450.</small></div>
+    <div class="chart"><h3>Quando o investimento volta</h3><div id="chart" role="img" aria-label="Gráfico do resultado acumulado"></div></div>
+    <details>
+      <summary>Como calculamos</summary>
+      <p>Receita: clientes por dia × ticket × dias, mais as encomendas, mais R$ 8.500 por mês de livros, clube e eventos. Custos variáveis: insumos de 36% e embalagens de 3% da comida, impostos de 6% e taxas de cartão de 2% da receita, mais R$ 2.000 de compra de livros. Custos fixos: R$ 32.000 por mês. O investimento de R$ 120.000 vem dos 7 sócios. Todos os valores são estimativas da equipe.</p>
+    </details>
+  </section>
+</main>
+<p class="foot" style="margin:0 20px 40px">Plano de negócio da disciplina de Empreendedorismo da UFAM (Engenharia de Produção). Empresa fictícia; todos os valores são estimativas. Equipe: Iara Duranth, Juliano Santos, Laura Bárbara, Lívia Letícia, Maria Clara, Monayara Reis e Suzy Eduarda.</p>
+<script>
+(function(){
+  function $(s){return document.querySelector(s);}
+  function brl(n){return 'R$ '+Math.round(n).toLocaleString('pt-BR');}
+  /* ---------- plano ---------- */
+  var INV=120000,FIX=32000,OUTRAS=8500;
+  var PRE={pes:{cpd:50,tk:40,dias:26,enc:10},base:{cpd:65,tk:45,dias:26,enc:16},oti:{cpd:80,tk:48,dias:26,enc:22}};
+  var inputs={cpd:$('#s-cpd'),tk:$('#s-tk'),dias:$('#s-dias'),enc:$('#s-enc')};
+  function R(v){return Math.round(v/100)*100;}
+  function model(s){
+    var cafe=s.cpd*s.tk*s.dias,enc=s.enc*450,comida=cafe+enc,rec=comida+OUTRAS;
+    var variaveis=R(comida*.36)+R(comida*.03)+2000+R(rec*.06)+R(rec*.02);
+    var margem=rec-variaveis,lucro=margem-FIX,be=FIX/(margem/rec);
+    return {rec:rec,lucro:lucro,be:be,beCli:s.cpd*be/rec,payback:lucro>0?INV/lucro:null};
+  }
+  function meses(n){return n.toFixed(1).replace('.',',')+' meses';}
+  function simUpdate(){
+    var s={cpd:+inputs.cpd.value,tk:+inputs.tk.value,dias:+inputs.dias.value,enc:+inputs.enc.value};
+    $('#o-cpd').textContent=s.cpd;$('#o-tk').textContent=brl(s.tk);$('#o-dias').textContent=s.dias;$('#o-enc').textContent=s.enc;
+    var m=model(s),neg=m.lucro<=0;
+    var pb=m.payback===null?'não se paga':(m.payback>36?'mais de 36 meses':meses(m.payback));
+    var r=$('#result');r.className='result'+(neg?' neg':'');
+    r.innerHTML='<div class="two"><div><span>'+(neg?'Prejuízo por mês':'Lucro por mês')+'</span><b>'+brl(Math.abs(m.lucro))+'</b></div><div><span>Retorno em meses</span><b>'+(m.payback!==null&&m.payback<=36?m.payback.toFixed(1).replace('.',','):(m.payback===null?'nunca':'36+'))+'</b></div></div>'+
+      '<p>Receita de '+brl(m.rec)+' por mês. Equilíbrio com cerca de '+Math.round(m.beCli)+' clientes por dia.</p>';
+    drawChart(m,pb);
+    document.querySelectorAll('.sc .chip').forEach(function(b){
+      var p=PRE[b.getAttribute('data-p')];b.setAttribute('aria-pressed',String(p.cpd===s.cpd&&p.tk===s.tk&&p.dias===s.dias&&p.enc===s.enc));
+    });
+  }
+  function nice(x){var p=Math.pow(10,Math.floor(Math.log(x)/Math.LN10)),f=x/p;return (f<=1?1:f<=2?2:f<=5?5:10)*p;}
+  function drawChart(m,pb){
+    var box=$('#chart'),W=Math.max(280,box.clientWidth||340),H=230,L=62,Rr=10,T=12,B=30,iw=W-L-Rr,ih=H-T-B;
+    var N=(m.payback!==null&&m.payback<=36)?Math.min(36,Math.max(12,Math.ceil(m.payback*3/6)*6)):36;
+    var y0=-INV,y1=-INV+m.lucro*N,lo=Math.min(y0,y1),hi=Math.max(y0,y1,20000);
+    var step=nice((hi-lo)/3),yMin=Math.floor(lo/step)*step,yMax=Math.ceil(hi/step)*step;
+    function X(k){return L+iw*k/N;}
+    function Y(v){return T+ih*(1-(v-yMin)/(yMax-yMin));}
+    var g='';
+    for(var v=yMin;v<=yMax+1;v+=step){
+      g+='<line x1="'+L+'" x2="'+(W-Rr)+'" y1="'+Y(v)+'" y2="'+Y(v)+'" style="stroke:var(--line)"/><text x="'+(L-6)+'" y="'+(Y(v)+4)+'" text-anchor="end">'+(v===0?'0':(v>0?'+':'−')+Math.abs(v/1000)+' mil')+'</text>';
+    }
+    for(var k=0;k<=N;k+=(N<=12?3:6)){g+='<text x="'+X(k)+'" y="'+(H-10)+'" text-anchor="middle">'+k+'</text>';}
+    var zero='<line x1="'+L+'" x2="'+(W-Rr)+'" y1="'+Y(0)+'" y2="'+Y(0)+'" style="stroke:var(--ink)" stroke-width="2"/>';
+    var line='<line x1="'+X(0)+'" y1="'+Y(y0)+'" x2="'+X(N)+'" y2="'+Y(y1)+'" style="stroke:'+(m.lucro>0?'var(--accent)':'var(--neg)')+'" stroke-width="4" stroke-linecap="round"/>';
+    var mark='';
+    if(m.payback!==null&&m.payback<=36){
+      var px=X(m.payback),py=Y(0),right=px>W*0.6;
+      mark='<circle cx="'+px+'" cy="'+py+'" r="7" style="fill:var(--hl);stroke:var(--ink)" stroke-width="3"/><text class="lab" x="'+(right?px-10:px+10)+'" y="'+(right?py-12:py+22)+'" text-anchor="'+(right?'end':'start')+'">'+m.payback.toFixed(1).replace('.',',')+' meses</text>';
+    }
+    box.setAttribute('aria-label','Resultado acumulado em '+N+' meses. Investimento volta em: '+pb+'.');
+    box.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" aria-hidden="true">'+g+zero+line+mark+'</svg><p class="sub" style="font-size:.85rem;margin-top:2px">Meses desde a abertura, já descontado o investimento (R$)</p>';
+  }
+  Object.keys(inputs).forEach(function(k){inputs[k].addEventListener('input',simUpdate);});
+  document.querySelectorAll('.sc .chip').forEach(function(b){b.addEventListener('click',function(){
+    var p=PRE[b.getAttribute('data-p')];inputs.cpd.value=p.cpd;inputs.tk.value=p.tk;inputs.dias.value=p.dias;inputs.enc.value=p.enc;simUpdate();
+  });});
+  var rt;window.addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(simUpdate,120);});
+
+
+  simUpdate();
+})();
+</script>
+</body>
+</html>
