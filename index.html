@@ -342,6 +342,9 @@ input[type=range]{width:100%;height:44px;accent-color:var(--accent);margin:2px 0
           <div><b>R$ 6</b><span>Alugar</span><small>por livro</small></div>
           <div><b>R$ 30</b><span>Clube</span><small>por mês</small></div>
         </div>
+        <div class="sec-h"><h2>Mais procurados</h2></div>
+        <ul class="books" id="topbooks"></ul>
+
         <div class="sec-h"><h2>Da prateleira local</h2></div>
         <ul class="books" id="books"></ul>
 
@@ -555,13 +558,20 @@ input[type=range]{width:100%;height:44px;accent-color:var(--accent);margin:2px 0
     $('#shelf').innerHTML=svg+'<rect x="0" y="148" width="340" height="6" fill="#2A1C14" opacity=".25"/>';
   })();
   var BOOKS=[["Dois Irmãos","Milton Hatoum","#A9481F"],["Órfãos do Eldorado","Milton Hatoum","#2E5E4E"],["Mad Maria","Márcio Souza","#C98B3B"],["Galvez, Imperador do Acre","Márcio Souza","#6B3E26"],["Faz escuro mas eu canto","Thiago de Mello","#244B3E"]];
+  var TOP=[["Quarta Asa","Rebecca Yarros","Fantasia"],["Chama de Ferro","Rebecca Yarros","Fantasia"],["Shogun","James Clavell","Romance histórico"],["Melhor do que nos filmes","Lynn Painter","Romance"],["Babel","R. F. Kuang","Fantasia"],["Caraval","Stephanie Garber","Fantasia"],["Patinando no amor","Lynn Painter","Romance"],["A razão do amor","Ali Hazelwood","Romance"],["On Wings of Blood","Briar Boleyn","Fantasia"],["A inquilina","Freida McFadden","Suspense"],["Jogos Vorazes","Suzanne Collins","Distopia"],["Binding 13","Chloe Walsh","Romance"]];
+  var TCOL=['#2A1C14','#A9481F','#2E5E4E','#C98B3B','#6B3E26','#244B3E','#8F3A15','#E0A458'];
   var reserved={};
-  function renderBooks(){
-    $('#books').innerHTML=BOOKS.map(function(b,i){
-      return '<li class="bk"><span class="spine" style="background:'+b[2]+'"></span><div><b>'+b[0]+'</b><span>'+b[1]+'</span></div><button class="res'+(reserved[i]?' on':'')+'" type="button" data-b="'+i+'">'+(reserved[i]?'Reservado':'Alugar R$ 6')+'</button></li>';
-    }).join('');
+  function bookRow(b,key,color){
+    return '<li class="bk"><span class="spine" style="background:'+color+'"></span><div><b>'+b[0]+'</b><span>'+b[1]+(b[2]&&key.charAt(0)==='t'?' · '+b[2]:'')+'</span></div><button class="res'+(reserved[key]?' on':'')+'" type="button" data-b="'+key+'">'+(reserved[key]?'Reservado':'Alugar R$ 6')+'</button></li>';
   }
-  $('#books').addEventListener('click',function(e){var b=e.target.closest('.res');if(!b)return;var i=b.getAttribute('data-b');reserved[i]=!reserved[i];renderBooks();toast(reserved[i]?'Livro reservado (simulação)':'Reserva cancelada');});
+  function renderBooks(){
+    $('#topbooks').innerHTML=TOP.map(function(b,i){return bookRow(b,'t'+i,TCOL[i%TCOL.length]);}).join('');
+    $('#books').innerHTML=BOOKS.map(function(b,i){return bookRow(b,'l'+i,b[2]);}).join('');
+  }
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('.res');if(!b)return;
+    var k=b.getAttribute('data-b');reserved[k]=!reserved[k];renderBooks();toast(reserved[k]?'Livro reservado (simulação)':'Reserva cancelada');
+  });
   renderBooks();
   $('#cn').addEventListener('input',function(e){
     var v=e.target.value.trim();$('#cardNome').textContent=v||'Seu nome aqui';
